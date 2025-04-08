@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -44,6 +44,7 @@ const MobileAutoComplete = ({
   handleBack,
   renderOption,
   onInputChangeMobile,
+  onInputChange,
 }) => {
   const [selectedValue, setSelectedValue] = useState(initialDisplayValue || "");
   const [textValue, setTextValue] = useState("");
@@ -51,9 +52,20 @@ const MobileAutoComplete = ({
   const handleTextValueChange = (event) => {
     const value = event.target.value;
     setTextValue(value);
-    onInputChangeMobile(value);
     setSelectedValue("");
+    // Call whichever handler is available
+    // This is done so that user need not to pass any new props apart from generic autocomplete props
+    if (typeof onInputChangeMobile === "function") {
+      onInputChangeMobile(value);
+    } else if (typeof onInputChange === "function") {
+      onInputChange(null, value,"input");
+    }
   };
+  useEffect(()=>{
+    if (typeof onInputChangeMobile != "function") {
+      setTextValue(initialDisplayValue)
+    }
+  },[])
 
   return (
     <React.Fragment>
@@ -63,7 +75,7 @@ const MobileAutoComplete = ({
             <ArrowBack />
           </IconButton>
 
-          {/* Show chip when a value is selected and input is empty */}
+          {/* Show chip when a value is selected and input is empty and a separate function is passed for handling input */}
           {selectedValue && textValue === "" && (
             <Chip
               size="small"

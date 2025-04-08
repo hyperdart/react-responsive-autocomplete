@@ -79,6 +79,7 @@ const ResponsiveAutocomplete = (
           initialDisplayValue={inputValue}
           renderOption={renderOption}
           onInputChangeMobile={onInputChangeMobile}
+          onInputChange={onInputChange}
         />
       </Dialog>
     </div>

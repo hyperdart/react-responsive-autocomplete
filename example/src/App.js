@@ -46,6 +46,7 @@ function App() {
     }
 
     if (reason === "input") {
+      console.log("called")
       setCityName(newValue);
       if (newValue.length >= 2) {
         fetchDestinations(newValue);
@@ -61,6 +62,7 @@ function App() {
       setOptions([]);
     }
   };
+  console.log("cityName",cityName)
   return (
     <ThemeProvider theme={theme}>
    <ResponsiveAutocomplete
@@ -69,12 +71,12 @@ function App() {
   options={options}
   getOptionLabel={(option) => {
     const parts = [option.wikiLabel, option.state, option.geonameCountry].filter(Boolean);
-    console.log("parts",parts)
+    // console.log("parts",parts)
     return parts.join(", ");
   }}
   inputValue={cityName}
   onInputChange={handleInputChange}
-  onInputChangeMobile={handleInputChangeMobile}
+  // onInputChangeMobile={handleInputChangeMobile}
   onChange={(event, newValue) => {
     if (newValue) {
       console.log("newValue",newValue)
