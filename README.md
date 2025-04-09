@@ -1,4 +1,4 @@
-# 📱 ResponsiveAutocomplete
+#  ResponsiveAutocomplete
 
 A responsive React component that mimics Material-UI's Autocomplete and adapts to **mobile** with a full-screen dialog for a better UX.
 
@@ -13,7 +13,7 @@ A responsive React component that mimics Material-UI's Autocomplete and adapts t
 
 ---
 
-## 🔧 Getting Started
+##  Getting Started
 
 ```bash
 
@@ -73,7 +73,7 @@ flowchart TD
  ```
 
 
-## 🧩 Requirements
+## Requirements
 ### This library requires the following versions:
 
 - React ^17.0.2
