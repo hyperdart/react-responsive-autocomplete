@@ -4,83 +4,56 @@ import {
   TextField,
   Dialog,
   useMediaQuery,
+  Box,
+  IconButton,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import SmallScreenAutoComplete from "./mobileAutocomplete";
+import { ArrowBack } from "@material-ui/icons";
 
-const ResponsiveAutocomplete = (
- { options,
-  getOptionLabel,
-  inputValue,
-  onInputChange,
-  onChange,
-  loading,
-  renderOption,
-  renderInput,
-  onInputChangeMobile,
-  style,
-  classes,
-  freeSolo,
-  label,
-}
-) => {
+const ResponsiveAutocomplete = (props) => {
   const [open, setOpen] = useState(false);
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
-  const handleBack = () => {
-    handleDialogClose();
-  };
-  const handleItemSelect = (event, value) => {
-    handleDialogClose();
-    onChange(event, value);
-  };
   
+  const handleOptionClicked = (event, value) => {
+    handleDialogClose();
+    props.onChange(event, value);
+  };
+
   // Desktop view: use default MUI Autocomplete
   if (!isMobile) {
-    return (
-        <Autocomplete
-        style={style}
-        classes={classes}
-          freeSolo={freeSolo}
-          options={options}
-          getOptionLabel={getOptionLabel}
-          inputValue={inputValue}
-          onInputChange={onInputChange}
-          onChange={onChange}
-          loading={loading}
-          renderOption={renderOption}
-          renderInput={renderInput}
-        />
-    );
+    return <Autocomplete {...props} />;
   }
 
   return (
     <div>
       <TextField
-        label={label}
+        label={props.label}
         variant="outlined"
-        value={inputValue}
+        value={props.inputValue}
         onClick={handleDialogOpen}
-        style={style}
-        classes={classes}
+        style={props.style}
+        classes={props.classes}
         InputProps={{
-          readOnly: true, 
+          readOnly: true,
         }}
       />
       <Dialog open={open} onClose={handleDialogClose} fullScreen>
-        <SmallScreenAutoComplete
-        options={options}
-          handleBack={handleBack}
-          handleItemSelect={handleItemSelect}
-          initialDisplayValue={inputValue}
-          renderOption={renderOption}
-          onInputChangeMobile={onInputChangeMobile}
-          onInputChange={onInputChange}
-        />
+        <Box
+          display="flex"
+          alignItems="center"
+          style={{ padding: "5px 5px 0px 0px" }}
+        >
+          <IconButton onClick={handleDialogClose}>
+            <ArrowBack fontSize="small" />
+          </IconButton>
+          <Box flex={1}>
+            <Autocomplete {...props} onChange={handleOptionClicked} />
+          </Box>
+        </Box>
       </Dialog>
     </div>
   );
