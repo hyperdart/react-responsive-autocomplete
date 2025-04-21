@@ -1,62 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Autocomplete } from "@material-ui/lab";
 import {
   TextField,
-  Dialog,
   useMediaQuery,
-  Box,
-  IconButton,
 } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
-import { ArrowBack } from "@material-ui/icons";
+import { useTheme, withStyles } from "@material-ui/core/styles";
+
+const styles = {
+  wrapper: {
+    position: 'relative',
+  },
+  focused: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    padding: 16,
+    background: 'white',
+    zIndex: 1300,
+    boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+    height: '100vh',
+    maxWidth:'-webkit-fill-available'
+  },
+};
 
 const ResponsiveAutocomplete = (props) => {
-  const [open, setOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const inputRef = useRef(null); // 🔑 Input ref
+  const { classes, ...autocompleteProps } = props;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const handleDialogOpen = () => setOpen(true);
-  const handleDialogClose = () => setOpen(false);
-  
-  const handleOptionClicked = (event, value) => {
-    handleDialogClose();
-    props.onChange(event, value);
+  const handleFocus = (e) => {
+    setIsFocused(true);
+    props.onFocus && props.onFocus(e);
   };
 
-  // Desktop view: use default MUI Autocomplete
+  const handleClose = (...args) => {
+    setIsFocused(false);
+    props.onClose && props.onClose(...args);
+  };
+
+  const handleChange = (...args) => {
+    setIsFocused(false);
+
+    // 🔑 This closes the mobile keyboard
+    if (inputRef.current) {
+      inputRef.current.blur();
+    }
+
+    props.onChange && props.onChange(...args);
+  };
+
+  const wrappedRenderInput = (params) => {
+    const inputElement = props.renderInput
+      ? props.renderInput(params)
+      : <TextField {...params} label="Search" variant="outlined" />;
+
+    return React.cloneElement(inputElement, {
+      ...inputElement.props,
+      inputRef, // Pass ref to input
+      autoFocus: isFocused,
+      onFocus: handleFocus,
+    });
+  };
+
   if (!isMobile) {
-    return <Autocomplete {...props} />;
+    return <Autocomplete {...autocompleteProps} />;
   }
 
   return (
-    <div>
-      <TextField
-        label={props.label}
-        variant="outlined"
-        value={props.inputValue}
-        onClick={handleDialogOpen}
-        style={props.style}
-        classes={props.classes}
-        InputProps={{
-          readOnly: true,
-        }}
+    <div className={isFocused ? classes.focused : classes.wrapper}>
+      <Autocomplete
+        {...autocompleteProps}
+        onFocus={handleFocus}
+        onClose={handleClose}
+        onChange={handleChange}
+        openOnFocus
+        renderInput={wrappedRenderInput}
       />
-      <Dialog open={open} onClose={handleDialogClose} fullScreen>
-        <Box
-          display="flex"
-          alignItems="center"
-          style={{ padding: "5px 5px 0px 0px" }}
-        >
-          <IconButton onClick={handleDialogClose}>
-            <ArrowBack fontSize="small" />
-          </IconButton>
-          <Box flex={1}>
-            <Autocomplete {...props} onChange={handleOptionClicked} />
-          </Box>
-        </Box>
-      </Dialog>
     </div>
   );
 };
 
-export default ResponsiveAutocomplete;
+export default withStyles(styles)(ResponsiveAutocomplete);
