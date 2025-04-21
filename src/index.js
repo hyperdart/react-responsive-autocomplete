@@ -1,10 +1,12 @@
 import React, { useState, useRef } from "react";
 import { Autocomplete } from "@material-ui/lab";
 import {
+  IconButton,
   TextField,
   useMediaQuery,
 } from "@material-ui/core";
 import { useTheme, withStyles } from "@material-ui/core/styles";
+import { ArrowBack } from "@material-ui/icons";
 
 const styles = {
   wrapper: {
@@ -16,11 +18,18 @@ const styles = {
     left: 0,
     width: '100%',
     padding: 16,
+    paddingLeft:2,
     background: 'white',
     zIndex: 1300,
     boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
     height: '100vh',
-    maxWidth:'-webkit-fill-available'
+    maxWidth:'-webkit-fill-available',
+    display:'flex',
+    justifyContent: 'flex-start'
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    marginBottom: 8,
   },
 };
 
@@ -38,20 +47,12 @@ const ResponsiveAutocomplete = (props) => {
 
   const handleClose = (...args) => {
     setIsFocused(false);
-    props.onClose && props.onClose(...args);
-  };
-
-  const handleChange = (...args) => {
-    setIsFocused(false);
-
-    // 🔑 This closes the mobile keyboard
     if (inputRef.current) {
       inputRef.current.blur();
     }
-
-    props.onChange && props.onChange(...args);
+    props.onClose && props.onClose(...args);
+ 
   };
-
   const wrappedRenderInput = (params) => {
     const inputElement = props.renderInput
       ? props.renderInput(params)
@@ -59,9 +60,8 @@ const ResponsiveAutocomplete = (props) => {
 
     return React.cloneElement(inputElement, {
       ...inputElement.props,
-      inputRef, // Pass ref to input
+      inputRef,
       autoFocus: isFocused,
-      onFocus: handleFocus,
     });
   };
 
@@ -71,11 +71,18 @@ const ResponsiveAutocomplete = (props) => {
 
   return (
     <div className={isFocused ? classes.focused : classes.wrapper}>
+       {isFocused && (
+      <IconButton onClick={() => {
+        setIsFocused(false);
+        if (inputRef.current) inputRef.current.blur();
+      }} className={classes.backButton}>
+        <ArrowBack />
+      </IconButton>
+    )}
       <Autocomplete
         {...autocompleteProps}
         onFocus={handleFocus}
         onClose={handleClose}
-        onChange={handleChange}
         openOnFocus
         renderInput={wrappedRenderInput}
       />
