@@ -1,8 +1,14 @@
 import React, { useState, useRef } from "react";
 import { Autocomplete } from "@material-ui/lab";
-import { IconButton, TextField, useMediaQuery } from "@material-ui/core";
+import {
+  IconButton,
+  TextField,
+  useMediaQuery,
+  Popper,
+} from "@material-ui/core";
 import { useTheme, withStyles } from "@material-ui/core/styles";
 import { ArrowBack } from "@material-ui/icons";
+import { grey } from "@material-ui/core/colors";
 
 const styles = {
   wrapper: {
@@ -13,8 +19,7 @@ const styles = {
     top: 0,
     left: 0,
     width: "100%",
-    padding: 16,
-    paddingLeft: 2,
+    padding: '16px 12px 16px 0px',
     background: "white",
     zIndex: 1300,
     boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
@@ -27,12 +32,33 @@ const styles = {
     alignSelf: "flex-start",
     marginBottom: 8,
   },
+  fullScreenPopper: {
+    zIndex: 1350,
+    position: "fixed !important",
+    top: "0px !important",
+    left: "0 !important",
+    width: "100vw !important",
+    "& .MuiAutocomplete-paper": {
+      boxShadow: "none",
+      borderRadius: 0,
+      maxHeight: "100%",
+      height: "100%",
+      borderTop: `1.5px solid ${grey[400]}`,
+      marginTop:'10px',
+      width:'102vw'
+    },
+    "& .MuiAutocomplete-listbox": {
+      maxHeight: "100%",
+      height: "100%",
+      overflowY: "auto",
+    },
+  },
 };
 
 const ResponsiveAutocomplete = (props) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
-  const { classes, ...autocompleteProps } = props;
+  const { classes,mobileDivClassName,backButtonClassName, ...autocompleteProps } = props;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
@@ -71,10 +97,14 @@ const ResponsiveAutocomplete = (props) => {
     });
   };
 
+  const FullScreenPopper = (popperProps) => {
+    return <Popper {...popperProps} className={classes.fullScreenPopper} />;
+  };
+
   return (
-    <div className={isFocused && isMobile ? classes.focused : classes.wrapper}>
+    <div className={isFocused && isMobile ? `${classes.focused} ${mobileDivClassName || ''}` : classes.wrapper}>
       {isFocused && isMobile && (
-        <IconButton onClick={handleBackClick} className={classes.backButton}>
+        <IconButton onClick={handleBackClick} className={`${classes.backButton} ${backButtonClassName || ''}`}>
           <ArrowBack />
         </IconButton>
       )}
@@ -83,6 +113,13 @@ const ResponsiveAutocomplete = (props) => {
         onFocus={handleFocus}
         onClose={handleClose}
         openOnFocus
+        PopperComponent={
+          props.PopperComponent
+            ? props.PopperComponent
+            : isMobile
+            ? FullScreenPopper
+            : undefined
+        }
         renderInput={isMobile ? wrappedRenderInput : props.renderInput}
       />
     </div>
