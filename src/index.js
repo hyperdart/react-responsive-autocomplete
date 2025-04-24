@@ -30,29 +30,31 @@ const styles = {
   },
   backButton: {
     alignSelf: "flex-start",
-    marginBottom: 8,
+    marginBottom: '18px',
   },
   fullScreenPopper: {
     zIndex: 1350,
     position: "fixed !important",
-    top: "0px !important",
+    top: "60px !important", // Adjust this based on your input height
     left: "0 !important",
     width: "100vw !important",
+    height: "calc(100vh - 60px)", // Leave space for the input
+    // overflowY: "auto",
     "& .MuiAutocomplete-paper": {
       boxShadow: "none",
       borderRadius: 0,
-      maxHeight: "100%",
       height: "100%",
       borderTop: `1.5px solid ${grey[400]}`,
-      marginTop:'10px',
+      marginTop: 0,
       width:'102vw'
+      // overflowY: "auto",
     },
     "& .MuiAutocomplete-listbox": {
       maxHeight: "100%",
       height: "100%",
-      overflowY: "auto",
+      // overflowY: "auto",
     },
-  },
+  }
 };
 
 const ResponsiveAutocomplete = (props) => {
@@ -116,7 +118,7 @@ const ResponsiveAutocomplete = (props) => {
         PopperComponent={
           props.PopperComponent
             ? props.PopperComponent
-            : isMobile
+            : isMobile&&isFocused
             ? FullScreenPopper
             : undefined
         }

@@ -1,145 +1,144 @@
-import logo from "./logo.svg";
-import "./App.css";
-import ResponsiveAutocomplete from "react-autocomplete";
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
+  Grid,
   TextField,
-  Box,
+  Button,
+  Paper,
   Typography,
   CircularProgress,
-  ThemeProvider,
-  CssBaseline,
-} from "@material-ui/core";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import { makeTheme } from "./theme";
-// import axios from 'axios';
+  Box
+} from '@material-ui/core';
+import Autocomplete from 'react-autocomplete';
+import { LocationOn } from '@material-ui/icons';
 
-function App() {
-  const [cityName, setCityName] = useState("Jaipur");
-  const [options, setOptions] = useState([]);
+const allCities = [
+  "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia",
+  "San Antonio", "San Diego", "Dallas", "San Jose", "Austin", "Jacksonville",
+  "Fort Worth", "Columbus", "Charlotte", "San Francisco", "Indianapolis",
+  "Seattle", "Denver", "Washington", "Boston", "El Paso", "Nashville",
+  "Detroit", "Oklahoma City", "Portland", "Las Vegas", "Memphis", "Louisville",
+  "Baltimore", "Milwaukee", "Albuquerque", "Tucson", "Fresno", "Mesa",
+  "Sacramento", "Atlanta", "Kansas City", "Colorado Springs", "Miami", "Raleigh",
+  "Omaha", "Long Beach", "Virginia Beach", "Oakland", "Minneapolis", "Tulsa",
+  "Arlington", "Tampa", "New Orleans", "Wichita", "Cleveland", "Bakersfield",
+  "Aurora", "Anaheim", "Honolulu", "Santa Ana", "Riverside", "Corpus Christi",
+  "Lexington", "Henderson", "Stockton", "Saint Paul", "Cincinnati", "St. Louis",
+  "Pittsburgh", "Greensboro", "Lincoln", "Anchorage", "Plano", "Orlando",
+  "Irvine", "Newark", "Toledo", "Durham", "Chula Vista", "Fort Wayne",
+  "Jersey City", "St. Petersburg", "Laredo", "Madison", "Chandler", "Buffalo",
+  "Lubbock", "Scottsdale", "Reno", "Glendale", "Gilbert", "Winston–Salem",
+  "North Las Vegas", "Norfolk", "Chesapeake", "Garland", "Irving", "Hialeah",
+  "Fremont", "Boise", "Richmond", "Baton Rouge"
+];
+
+const SimpleForm = () => {
+  const [formValues, setFormValues] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: ''
+  });
+  const [cityName, setCityName] = useState('');
+  const [cityOptions, setCityOptions] = useState(allCities.slice(0, 5));
   const [loading, setLoading] = useState(false);
-  // const [checkIn, setCheckIn] = useState(getTomorrow());
-  // const [checkOut, setCheckOut] = useState(getDayAfterTomorrow());
-  const theme = makeTheme("light");
 
-  const fetchDestinations = async (query) => {
+  useEffect(() => {
+    if(cityName!=='')
     setLoading(true);
-    try {
-      const response = await fetch(
-        `${window.parent.location.origin}/nodeapi/hotels/autoSuggestCity?cityName=${query}`
-      );
-      const data = await response.json();
-      const cities =
-        data.data && data.data.topCities ? data.data.topCities : [];
-      setOptions(cities);
-    } catch (error) {
-      console.error("Error fetching destinations:", error);
-      setOptions([]);
-    }
-    setLoading(false);
+    const timeout = setTimeout(() => {
+      const filtered = cityName
+        ? allCities.filter(city =>
+            city.toLowerCase().includes(cityName.toLowerCase())
+          )
+        : allCities.slice(0, 5);
+      setCityOptions(filtered);
+      setLoading(false);
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [cityName]);
+
+  const handleChange = (e) => {
+    setFormValues({ ...formValues, [e.target.name]: e.target.value });
   };
 
-  const handleInputChange = (event, newValue, reason) => {
-    if (reason === "clear") {
-      setCityName("");
-      setOptions([]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { firstName, lastName, email, address } = formValues;
+  
+    if (!firstName || !lastName || !email || !address || !cityName) {
+      alert("Please fill all the details before submitting the form.");
       return;
     }
-
-    if (reason === "input") {
-      console.log("called");
-      setCityName(newValue);
-      if (newValue.length >= 2) {
-        fetchDestinations(newValue);
-      } else {
-        setOptions([]);
-      }
-    }
+  
+    alert("Form Submitted Successfully");
+  
+    // Reset form values after successful submission
+    setFormValues({
+      firstName: '',
+      lastName: '',
+      email: '',
+      address: ''
+    });
+    setCityName('');
   };
-  // const handleInputChangeMobile = (event, newValue, reason) => {
-  //   if (reason === "clear") {
-  //     setOptions([]);
-  //     return;
-  //   }
-
-  //   if (reason === "input") {
-  //     if (newValue.length >= 2) {
-  //       fetchDestinations(newValue);
-  //     } else {
-  //       setOptions([]);
-  //     }
-  //   }
-  // };
-  console.log("cityName", cityName);
+  
   return (
-    <ThemeProvider theme={theme}>
-      <Typography variant="h5" style={{ marginBottom: "20px" }}>
-        This is an Autocomplete demo
-      </Typography>
-      <ResponsiveAutocomplete
-        freeSolo={true}
-        style={{ width: "100%", borderRadius: "4px" }}
-        options={options}
-        getOptionLabel={(option) => {
-          const parts = [
-            option.wikiLabel,
-            option.state,
-            option.geonameCountry,
-          ].filter(Boolean);
-          // console.log("parts",parts)
-          return parts.join(", ");
-        }}
-        inputValue={cityName}
-        onInputChange={handleInputChange}
-        // onInputChangeMobile={handleInputChangeMobile}
-        onChange={(event, newValue) => {
-          if (newValue) {
-            console.log("newValue", newValue);
-            const parts = [
-              newValue.wikiLabel,
-              newValue.state,
-              newValue.geonameCountry,
-            ].filter(Boolean);
-            setCityName(parts.join(", "));
-            setOptions([]);
-          }
-        }}
-        loading={loading}
-        renderOption={(option) => (
-          <React.Fragment>
-            <LocationOnIcon style={{ color: "gray", marginRight: 8 }} />
-            <Box>
-              <Typography variant="body1">{option.wikiLabel}</Typography>
-              {(option.state || option.geonameCountry) && (
-                <Typography variant="body2" color="textPrimary">
-                  {[option.state, option.geonameCountry]
-                    .filter(Boolean)
-                    .join(", ")}
-                </Typography>
+    <Paper style={{ padding: 16, maxWidth: 600, margin: 'auto' }}>
+      <Typography variant="h6" gutterBottom>User Info Form</Typography>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField name="firstName" label="First Name" fullWidth value={formValues.firstName} onChange={handleChange} variant="outlined" size="small" />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField name="lastName" label="Last Name" fullWidth value={formValues.lastName} onChange={handleChange} variant="outlined" size="small" />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField name="email" label="Email ID" type="email" fullWidth value={formValues.email} onChange={handleChange} variant="outlined" size="small" />
+          </Grid>
+          <Grid item xs={12}>
+            <Autocomplete
+              fullWidth
+              options={cityOptions}
+              value={cityName}
+              loading={loading}
+              onInputChange={(e, value) => setCityName(value)}
+              onChange={(e, value) => setCityName(value)}
+              getOptionLabel={(option) => option}
+              renderOption={(option) => (
+                <React.Fragment>
+                  <LocationOn style={{ color: "gray", marginRight: 8 }} />
+                  <Box>
+                    <Typography variant="body1">{option}</Typography>
+                    
+                  </Box>
+                </React.Fragment>
               )}
-            </Box>
-          </React.Fragment>
-        )}
-        label="Search for Location"
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Search for Destination"
-            variant="outlined"
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <span>
-                  {loading && <CircularProgress color="inherit" size={20} />}
-                  {params.InputProps.endAdornment}
-                </span>
-              ),
-            }}
-          />
-        )}
-      />
-    </ThemeProvider>
+              renderInput={(params) => (
+                <TextField {...params} label="City" variant="outlined" size="small" fullWidth
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <span>
+                      {loading && <CircularProgress color="inherit" size={20} />}
+                      {params.InputProps.endAdornment}
+                    </span>
+                  ),
+                }} />
+              )}
+              freeSolo
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField name="address" label="Address" fullWidth value={formValues.address} onChange={handleChange} variant="outlined" size="small" multiline minRows={2} />
+          </Grid>
+          <Grid item xs={12} style={{ textAlign: 'center' }}>
+            <Button type="submit" variant="contained" color="primary">Submit</Button>
+          </Grid>
+        </Grid>
+      </form>
+    </Paper>
   );
-}
+};
 
-export default App;
+export default SimpleForm;

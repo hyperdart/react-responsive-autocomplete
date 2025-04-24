@@ -27,6 +27,12 @@ npm start
 
 > Do the same thing in both the main and example folders.
 
+## Mobile View
+<img src="assets/mobile_example.gif" width="350"  alt="Demo" />
+
+## Desktop View
+<img src="assets/desktop_example.gif" width="700" alt="Demo" />
+
 ## ⚙️ Props
 
 All standard props from `MUIv4 Autocomplete` are supported.
