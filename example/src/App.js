@@ -137,12 +137,6 @@ const SimpleForm = () => {
           </Grid>
         </Grid>
       </form>
-      <Typography variant='h1'>Demo App</Typography>
-      <Typography variant='h1'>Demo App</Typography>
-      <Typography variant='h1'>Demo App</Typography>
-      <Typography variant='h1'>Demo App</Typography>
-      <Typography variant='h1'>Demo App</Typography>
-      
     </Paper>
   );
 };

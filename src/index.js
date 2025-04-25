@@ -35,7 +35,7 @@ const styles = {
   fullScreenPopper: {
     zIndex: 1350,
     position: "fixed !important",
-    top: "60px !important", // Adjust this based on your input height
+    top: "60px !important", 
     left: "0 !important",
     width: "100vw !important",
     height: "calc(100vh - 60px)", // Leave space for the input
