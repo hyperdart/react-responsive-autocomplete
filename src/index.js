@@ -59,7 +59,6 @@ const styles = {
 
 const ResponsiveAutocomplete = (props) => {
   const [isFocused, setIsFocused] = useState(false);
-  const inputRef = useRef(null);
   const { classes,mobileDivClassName,backButtonClassName, ...autocompleteProps } = props;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
@@ -71,18 +70,7 @@ const ResponsiveAutocomplete = (props) => {
 
   const handleClose = (...args) => {
     setIsFocused(false);
-    if (inputRef.current) {
-      inputRef.current.blur(); //Keyboard closes after selecting a value
-    }
     props.onClose && props.onClose(...args);
-  };
-
-  const handleBackClick = () => {
-    setIsFocused(false);
-    if (inputRef.current) {
-      inputRef.current.blur();
-    }
-    inputRef.current.blur();
   };
   
   const wrappedRenderInput = (params) => {
@@ -94,7 +82,6 @@ const ResponsiveAutocomplete = (props) => {
 
     return React.cloneElement(inputElement, {
       ...inputElement.props,
-      inputRef,
       autoFocus: isFocused,
     });
   };
@@ -106,7 +93,7 @@ const ResponsiveAutocomplete = (props) => {
   return (
     <div className={isFocused && isMobile ? `${classes.focused} ${mobileDivClassName || ''}` : classes.wrapper}>
       {isFocused && isMobile && (
-        <IconButton onClick={handleBackClick} className={`${classes.backButton} ${backButtonClassName || ''}`}>
+        <IconButton  className={`${classes.backButton} ${backButtonClassName || ''}`}>
           <ArrowBack />
         </IconButton>
       )}
@@ -122,6 +109,7 @@ const ResponsiveAutocomplete = (props) => {
             ? FullScreenPopper
             : undefined
         }
+        blurOnSelect={isMobile?true:props.blurOnSelect}
         renderInput={isMobile ? wrappedRenderInput : props.renderInput}
       />
     </div>
