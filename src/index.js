@@ -1,16 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Autocomplete } from "@material-ui/lab";
 import {
   IconButton,
   TextField,
   useMediaQuery,
-  Popper,
 } from "@material-ui/core";
 import { useTheme, withStyles } from "@material-ui/core/styles";
 import { ArrowBack } from "@material-ui/icons";
 import { grey } from "@material-ui/core/colors";
 
-const styles = {
+const styles =(theme)=>( {
   wrapper: {
     position: "relative",
   },
@@ -20,7 +19,7 @@ const styles = {
     left: 0,
     width: "100%",
     padding: '16px 12px 16px 0px',
-    background: "white",
+    background: theme.palette.background.paper,
     zIndex: 1300,
     boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
     height: "100vh",
@@ -32,36 +31,41 @@ const styles = {
     alignSelf: "flex-start",
     marginBottom: '18px',
   },
-  fullScreenPopper: {
-    zIndex: 1350,
-    position: "fixed !important",
-    top: "60px !important", 
-    left: "0 !important",
-    width: "100vw !important",
-    height: "calc(100vh - 60px)", // Leave space for the input
-    // overflowY: "auto",
-    "& .MuiAutocomplete-paper": {
-      boxShadow: "none",
-      borderRadius: 0,
-      height: "100%",
-      borderTop: `1.5px solid ${grey[400]}`,
-      marginTop: 0,
-      width:'102vw'
-      // overflowY: "auto",
-    },
-    "& .MuiAutocomplete-listbox": {
-      maxHeight: "100%",
-      height: "100%",
-      // overflowY: "auto",
-    },
-  }
-};
+  paper: {
+    boxShadow: 'none',            
+    width: '100vw !important',                
+    left: '0 !important', 
+    borderTop: `1.5px solid ${grey[400]}`,
+    borderRadius:0,
+    marginTop: theme.spacing(1),   
+  },
+  popper: {
+    width: '101vw !important',
+  left: '0 !important', 
+  right: '0 !important',
+    overflow:'hidden'     
+  },
+});
 
 const ResponsiveAutocomplete = (props) => {
   const [isFocused, setIsFocused] = useState(false);
   const { classes,mobileDivClassName,backButtonClassName, ...autocompleteProps } = props;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+
+  useEffect(() => {
+    if (isFocused && isMobile) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';            
+      document.body.style.width = '100%';                 
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+  }, [isFocused, isMobile]);
 
   const handleFocus = (e) => {
     setIsFocused(true);
@@ -86,9 +90,6 @@ const ResponsiveAutocomplete = (props) => {
     });
   };
 
-  const FullScreenPopper = (popperProps) => {
-    return <Popper {...popperProps} className={classes.fullScreenPopper} />;
-  };
 
   return (
     <div className={isFocused && isMobile ? `${classes.focused} ${mobileDivClassName || ''}` : classes.wrapper}>
@@ -102,13 +103,13 @@ const ResponsiveAutocomplete = (props) => {
         onFocus={handleFocus}
         onClose={handleClose}
         openOnFocus
-        PopperComponent={
-          props.PopperComponent
-            ? props.PopperComponent
-            : isMobile&&isFocused
-            ? FullScreenPopper
-            : undefined
-        }
+        classes={{
+          ...(autocompleteProps.classes || {}),
+          ...(isFocused && isMobile ? { 
+            paper: `${autocompleteProps.classes?.paper || ''} ${classes.paper}`.trim(),
+            popper: `${autocompleteProps.classes?.popper || ''} ${classes.popper}`.trim(),
+          } : {}),
+        }}
         blurOnSelect={isMobile?true:props.blurOnSelect}
         renderInput={isMobile ? wrappedRenderInput : props.renderInput}
       />
@@ -116,4 +117,4 @@ const ResponsiveAutocomplete = (props) => {
   );
 };
 
-export default withStyles(styles)(ResponsiveAutocomplete);
+export default withStyles(styles, { withTheme: true })(ResponsiveAutocomplete);
