@@ -8,7 +8,7 @@ import terser from '@rollup/plugin-terser'
 import replace from '@rollup/plugin-replace';
 import pkg from './package.json'
 export default {
-    //external: ['react', 'react-dom', '@material-ui/core', '@material-ui/core/styles', 'mathjs'],
+    external: ['react', 'react-dom', '@mui/material', '@mui/icons-material',  "@material-ui/core", "@material-ui/icons", "@material-ui/lab"],
     input: './src/index.js',
     output: [
         {
