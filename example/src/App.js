@@ -9,7 +9,7 @@ import {
   Box,
   // Autocomplete
 } from '@mui/material';
-import Autocomplete from 'react-autocomplete';
+import {Autocomplete} from 'react-autocomplete';
 import { LocationOn } from '@mui/icons-material';
 
 const allCities = [
