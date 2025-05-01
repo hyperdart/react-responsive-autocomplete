@@ -14,15 +14,15 @@ try {
 } catch {
   // Fallback to MUI v4
   console.log("in catch block")
-//   Autocomplete = require('@material-ui/lab/Autocomplete').default;
-//   Popper = require('@material-ui/core/Popper').default;
-//   TextField = require('@material-ui/core/TextField').default;
-//   IconButton = require('@material-ui/core/IconButton').default;
-//   Paper = require('@material-ui/core/Paper').default;
-//   useMediaQuery=require('@material-ui/core/useMediaQuery').default;
-//   useTheme = require('@material-ui/core/styles').useTheme;
-//   ArrowBack = require('@material-ui/icons/ArrowBack').default;
-//   grey = require('@material-ui/core/colors').grey;
+  Autocomplete = require('@material-ui/lab/Autocomplete').default;
+  Popper = require('@material-ui/core/Popper').default;
+  TextField = require('@material-ui/core/TextField').default;
+  IconButton = require('@material-ui/core/IconButton').default;
+  Paper = require('@material-ui/core/Paper').default;
+  useMediaQuery=require('@material-ui/core/useMediaQuery').default;
+  useTheme = require('@material-ui/core/styles').useTheme;
+  ArrowBack = require('@material-ui/icons/ArrowBack').default;
+  grey = require('@material-ui/core/colors').grey;
 }
 
 export {
