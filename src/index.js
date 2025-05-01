@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Autocomplete } from "@material-ui/lab";
 import {
   IconButton,
   Paper,
   Popper,
   TextField,
   useMediaQuery,
-} from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
-import { ArrowBack } from "@material-ui/icons";
-import { grey } from "@material-ui/core/colors";
+  Autocomplete,
+  useTheme,
+  ArrowBack,
+  grey
+} from "./muiWrapper";
 
 const ResponsiveAutocomplete = (props) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -23,7 +23,7 @@ const ResponsiveAutocomplete = (props) => {
   } = props;
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
 
   useEffect(() => {
     if (isFocused && isMobile) {
@@ -117,10 +117,10 @@ const ResponsiveAutocomplete = (props) => {
         onFocus={handleFocus}
         onClose={handleClose}
         openOnFocus
-        PaperComponent={isMobile && !PaperComponent ? (props) => (
+        PaperComponent={isMobile && isFocused&&!PaperComponent ? (props) => (
           <Paper {...props} style={{ ...props.style, ...paperStyle }} />
         ) : PaperComponent}
-        PopperComponent={isMobile && !PopperComponent ? (props) => (
+        PopperComponent={isMobile && isFocused&& !PopperComponent ? (props) => (
           <Popper {...props} style={{ ...props.style, ...popperStyle }} />
         ) : PopperComponent}
         blurOnSelect={isMobile ? true : props.blurOnSelect}

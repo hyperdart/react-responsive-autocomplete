@@ -6,10 +6,11 @@ import {
   Paper,
   Typography,
   CircularProgress,
-  Box
-} from '@material-ui/core';
+  Box,
+  // Autocomplete
+} from '@mui/material';
 import Autocomplete from 'react-autocomplete';
-import { LocationOn } from '@material-ui/icons';
+import { LocationOn } from '@mui/icons-material';
 
 const allCities = [
   "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia",
@@ -43,8 +44,8 @@ const SimpleForm = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if(cityName!=='')
-    setLoading(true);
+    if (cityName !== '') setLoading(true);
+
     const timeout = setTimeout(() => {
       const filtered = cityName
         ? allCities.filter(city =>
@@ -54,6 +55,7 @@ const SimpleForm = () => {
       setCityOptions(filtered);
       setLoading(false);
     }, 400);
+
     return () => clearTimeout(timeout);
   }, [cityName]);
 
@@ -64,15 +66,14 @@ const SimpleForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { firstName, lastName, email, address } = formValues;
-  
+
     if (!firstName || !lastName || !email || !address || !cityName) {
       alert("Please fill all the details before submitting the form.");
       return;
     }
-  
+
     alert("Form Submitted Successfully");
-  
-    // Reset form values after successful submission
+
     setFormValues({
       firstName: '',
       lastName: '',
@@ -81,20 +82,47 @@ const SimpleForm = () => {
     });
     setCityName('');
   };
-  
+
   return (
-    <Paper style={{ padding: 16, maxWidth: 600, margin: 'auto' }}>
-      <Typography variant="h6" gutterBottom>User Info Form</Typography>
+    <Paper sx={{ p: 2, maxWidth: 600, mx: 'auto' }}>
+      <Typography variant="h6" gutterBottom>
+        User Info Form
+      </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <TextField name="firstName" label="First Name" fullWidth value={formValues.firstName} onChange={handleChange} variant="outlined" size="small" />
+            <TextField
+              name="firstName"
+              label="First Name"
+              fullWidth
+              value={formValues.firstName}
+              onChange={handleChange}
+              variant="outlined"
+              size="small"
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField name="lastName" label="Last Name" fullWidth value={formValues.lastName} onChange={handleChange} variant="outlined" size="small" />
+            <TextField
+              name="lastName"
+              label="Last Name"
+              fullWidth
+              value={formValues.lastName}
+              onChange={handleChange}
+              variant="outlined"
+              size="small"
+            />
           </Grid>
           <Grid item xs={12}>
-            <TextField name="email" label="Email ID" type="email" fullWidth value={formValues.email} onChange={handleChange} variant="outlined" size="small" />
+            <TextField
+              name="email"
+              label="Email ID"
+              type="email"
+              fullWidth
+              value={formValues.email}
+              onChange={handleChange}
+              variant="outlined"
+              size="small"
+            />
           </Grid>
           <Grid item xs={12}>
             <Autocomplete
@@ -102,38 +130,52 @@ const SimpleForm = () => {
               options={cityOptions}
               value={cityName}
               loading={loading}
+              freeSolo
               onInputChange={(e, value) => setCityName(value)}
-              onChange={(e, value) => setCityName(value)}
+              onChange={(e, value) => setCityName(value || '')}
               getOptionLabel={(option) => option}
-              renderOption={(option) => (
-                <React.Fragment>
-                  <LocationOn style={{ color: "gray", marginRight: 8 }} />
-                  <Box>
-                    <Typography variant="body1">{option}</Typography>
-                    
-                  </Box>
-                </React.Fragment>
+              renderOption={(props, option) => (
+                <Box component="li" {...props}>
+                  <LocationOn sx={{ color: "gray", mr: 1 }} />
+                  <Typography variant="body1">{option}</Typography>
+                </Box>
               )}
               renderInput={(params) => (
-                <TextField {...params} label="City" variant="outlined" size="small" fullWidth
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <span>
-                      {loading && <CircularProgress color="inherit" size={20} />}
-                      {params.InputProps.endAdornment}
-                    </span>
-                  ),
-                }} />
+                <TextField
+                  {...params}
+                  label="City"
+                  variant="outlined"
+                  size="small"
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <>
+                        {loading && <CircularProgress color="inherit" size={20} />}
+                        {params.InputProps.endAdornment}
+                      </>
+                    ),
+                  }}
+                />
               )}
-              freeSolo
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField name="address" label="Address" fullWidth value={formValues.address} onChange={handleChange} variant="outlined" size="small" multiline minRows={2} />
+            <TextField
+              name="address"
+              label="Address"
+              fullWidth
+              value={formValues.address}
+              onChange={handleChange}
+              variant="outlined"
+              size="small"
+              multiline
+              minRows={2}
+            />
           </Grid>
-          <Grid item xs={12} style={{ textAlign: 'center' }}>
-            <Button type="submit" variant="contained" color="primary">Submit</Button>
+          <Grid item xs={12} textAlign="center">
+            <Button type="submit" variant="contained" color="primary">
+              Submit
+            </Button>
           </Grid>
         </Grid>
       </form>

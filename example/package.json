@@ -4,9 +4,8 @@
     "license": "MIT",
     "private": true,
     "dependencies": {
-    "@material-ui/core": "file:../node_modules/@material-ui/core",
-    "@material-ui/icons": "file:../node_modules/@material-ui/icons",
-    "@material-ui/lab": "file:../node_modules/@material-ui/lab",
+    "@mui/material": "file:../node_modules/@mui/material",
+    "@mui/icons-material": "file:../node_modules/@mui/icons-material",
     "react-autocomplete": "file:..",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
