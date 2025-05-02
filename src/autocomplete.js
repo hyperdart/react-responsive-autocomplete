@@ -14,7 +14,7 @@ const ResponsiveAutocomplete = (props) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const {
-    mobileFocusedSx,
+    mobileBackgroundSx,
     mobileBackgroundClassName,
     backButtonSx,
     backButtonClassName,
@@ -53,9 +53,10 @@ const ResponsiveAutocomplete = (props) => {
     onFocus?.(e);
   };
 
-  const handleClose = (...args) => {
+  const handleClose = (event,reason) => {
+    if(reason!='toggleInput')
     setIsFocused(false);
-    onClose?.(...args);
+    onClose?.(event,reason);
   };
 
   const wrappedRenderInput = (params) => {
@@ -86,7 +87,7 @@ const ResponsiveAutocomplete = (props) => {
         display: "flex",
         justifyContent: "flex-start",
         flexDirection: "row",
-        ...mobileFocusedSx,
+        ...mobileBackgroundSx,
       }
     : {
         position: "relative",

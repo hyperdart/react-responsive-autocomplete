@@ -76,17 +76,18 @@ const ResponsiveAutocomplete = (props) => {
 
   const handleFocus = (e) => {
     setIsFocused(true);
-    props.onFocus && props.onFocus(e);
+    onFocus && onFocus(e);
   };
 
-  const handleClose = (...args) => {
+  const handleClose = (event,reason) => {
+    if(reason!='toggleInput')
     setIsFocused(false);
-    props.onClose && props.onClose(...args);
+    onClose && onClose(event,reason);
   };
 
   const wrappedRenderInput = (params) => {
     const inputElement = props.renderInput ? (
-      props.renderInput(params)
+      renderInput(params)
     ) : (
       <TextField {...params} label="Search" variant="outlined" />
     );
@@ -129,8 +130,8 @@ const ResponsiveAutocomplete = (props) => {
               }
             : {}),
         }}
-        blurOnSelect={isMobile ? true : props.blurOnSelect}
-        renderInput={isMobile ? wrappedRenderInput : props.renderInput}
+        blurOnSelect={isMobile ? true : blurOnSelect}
+        renderInput={isMobile ? wrappedRenderInput : renderInput}
       />
     </div>
   );

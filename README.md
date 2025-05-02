@@ -5,7 +5,7 @@ A responsive React component that mimics Material-UI's Autocomplete and adapts t
 ---
 
 ## ✨ Features
-
+- ✅ Support Mutiple MUI version (4,5 & 6)
 - ✅ Responsive Design – switches between standard and fullscreen layouts automatically  
 - ✅ Mobile Optimization – mobile version takes full screen for better mobile experience
 - ✅ Customizable Back Button & Layout – add styles with optional classNames
@@ -13,6 +13,11 @@ A responsive React component that mimics Material-UI's Autocomplete and adapts t
 - ✅ Zero breaking changes: use it exactly like `<Autocomplete>`
 
 ---
+
+## Components
+ There are 2 components that can be used from this package
+- `Autocomplete` for muiv5 and muiv6 versions
+- `AutocompleteV4` for muiv4 version
 
 ##  Getting Started
 
@@ -28,34 +33,33 @@ npm start
 > Do the same thing in both the main and example folders.
 
 ## Mobile View
-<img src="assets/mobile_example.gif" width="350px" alt="Demo" />
+<p align="center">
+<img src="assets/mobile-example.gif" width="350px" alt="Demo" />
+</p>
 
 ## Desktop View
-<img src="assets/desktop_example.gif" width="700" alt="Demo" />
+<p align="center">
+<img src="assets/desktop-example.gif" width="80%" alt="Demo" />
+</p>
 
 ## ⚙️ Props
 
-All standard props from `MUIv4 Autocomplete` are supported.
+### Autocomplete
+All standard props from `MUI v5/v6 Autocomplete` are supported.
 
 | Prop                  | Type       | Description |
 |-----------------------|------------|-------------|
-| `mobileDivClassName`  | string     | Optional class added to the fullscreen <div> container on mobile |
+| `mobilebackgroundClassName`  | string     | Optional class added to the fullscreen container on mobile |
 | `backButtonClassName` | string     | Optional class added to the back <IconButton> shown in mobile fullscreen |
+| `mobileBackgroundSx`  | object     | Optional sz added to the fullscreen  container on mobile |
+| `backButtonSx` | object     | Optional sx added to the back <IconButton> shown in mobile fullscreen |
 
-
-
-## Requirements
-### This library requires the following versions:
-
-- React ^17.0.2
-
-- Material-UI Core ^4.12.4
-
-- Material-UI Icons ^4.11.3
-
-- Material-UI Lab ^4.0.0-alpha.47
-
-> ⚠️ Currently works with MUI v4 and React 17 only.
+### AutocompleteV4
+All standard props from `MUI v5/v6 Autocomplete` are supported.
+| Prop                  | Type       | Description |
+|-----------------------|------------|-------------|
+| `mobilebackgroundClassName`  | string     | Optional class added to the fullscreen <div> container on mobile |
+| `backButtonClassName` | string     | Optional class added to the back <IconButton> shown in mobile fullscreen |
 
 
 ## Customization Tips
