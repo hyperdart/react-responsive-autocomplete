@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Autocomplete } from "@material-ui/lab";
-import {
-  IconButton,
-  TextField,
-  useMediaQuery,
-} from "@material-ui/core";
+import { IconButton, TextField, useMediaQuery } from "@material-ui/core";
 import { useTheme, withStyles } from "@material-ui/core/styles";
 import { ArrowBack } from "@material-ui/icons";
 import { grey } from "@material-ui/core/colors";
 
-const styles =(theme)=>( {
+const styles = (theme) => ({
   wrapper: {
     position: "relative",
   },
@@ -18,7 +14,7 @@ const styles =(theme)=>( {
     top: 0,
     left: 0,
     width: "100%",
-    padding: '16px 12px 16px 0px',
+    padding: "16px 12px 16px 0px",
     background: theme.palette.background.paper,
     zIndex: 1300,
     boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
@@ -29,43 +25,52 @@ const styles =(theme)=>( {
   },
   backButton: {
     alignSelf: "flex-start",
-    marginBottom: '18px',
+    marginBottom: "18px",
   },
   paper: {
-    boxShadow: 'none',            
-    width: '100vw !important',                
-    left: '0 !important', 
+    boxShadow: "none",
+    width: "100vw !important",
+    left: "0 !important",
     borderTop: `1.5px solid ${grey[400]}`,
-    borderRadius:0,
-    marginTop: theme.spacing(1),   
+    borderRadius: 0,
+    marginTop: theme.spacing(1),
   },
   popper: {
-    width: '101vw !important',
-  left: '0 !important', 
-  right: '0 !important',
-    overflow:'hidden'     
+    width: "101vw !important",
+    left: "0 !important",
+    right: "0 !important",
+    overflow: "hidden",
   },
 });
 
 const ResponsiveAutocomplete = (props) => {
   const [isFocused, setIsFocused] = useState(false);
-  const { classes,mobileBackgroundClassName,backButtonClassName,  renderInput,
+  const {
+    classes,
+    mobileBackgroundClassName,
+    backButtonClassName,
+    renderInput,
     onFocus,
-    onClose, ...autocompleteProps } = props;
+    onClose,
+    blurOnSelect,
+    ...autocompleteProps
+  } = props;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMobileFocused = isFocused && isMobile;
 
+  // Lock page scroll when mobile input is focused
   useEffect(() => {
-    if (isFocused && isMobile) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';            
-      document.body.style.width = '100%';                 
+    if (isMobileFocused) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
     } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
     }
   }, [isFocused, isMobile]);
 
@@ -78,25 +83,31 @@ const ResponsiveAutocomplete = (props) => {
     setIsFocused(false);
     props.onClose && props.onClose(...args);
   };
-  
+
   const wrappedRenderInput = (params) => {
     const inputElement = props.renderInput ? (
       props.renderInput(params)
     ) : (
       <TextField {...params} label="Search" variant="outlined" />
     );
-
     return React.cloneElement(inputElement, {
       ...inputElement.props,
       autoFocus: isFocused,
     });
   };
 
-
   return (
-    <div className={isFocused && isMobile ? `${classes.focused} ${mobileBackgroundClassName || ''}` : classes.wrapper}>
-      {isFocused && isMobile && (
-        <IconButton  className={`${classes.backButton} ${backButtonClassName || ''}`}>
+    <div
+      className={
+        isMobileFocused
+          ? `${classes.focused} ${mobileBackgroundClassName || ""}`
+          : classes.wrapper
+      }
+    >
+      {isMobileFocused && (
+        <IconButton
+          className={`${classes.backButton} ${backButtonClassName || ""}`}
+        >
           <ArrowBack />
         </IconButton>
       )}
@@ -107,12 +118,18 @@ const ResponsiveAutocomplete = (props) => {
         openOnFocus
         classes={{
           ...(autocompleteProps.classes || {}),
-          ...(isFocused && isMobile ? { 
-            paper: `${autocompleteProps.classes?.paper || ''} ${classes.paper}`.trim(),
-            popper: `${autocompleteProps.classes?.popper || ''} ${classes.popper}`.trim(),
-          } : {}),
+          ...(isMobileFocused
+            ? {
+                paper: `${autocompleteProps.classes?.paper || ""} ${
+                  classes.paper
+                }`.trim(),
+                popper: `${autocompleteProps.classes?.popper || ""} ${
+                  classes.popper
+                }`.trim(),
+              }
+            : {}),
         }}
-        blurOnSelect={isMobile?true:props.blurOnSelect}
+        blurOnSelect={isMobile ? true : props.blurOnSelect}
         renderInput={isMobile ? wrappedRenderInput : props.renderInput}
       />
     </div>

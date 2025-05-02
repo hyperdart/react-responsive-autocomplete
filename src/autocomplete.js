@@ -22,6 +22,7 @@ const ResponsiveAutocomplete = (props) => {
     onFocus,
     onClose,
     slotProps = {},
+    blurOnSelect,
     ...autocompleteProps
   } = props;
 
@@ -29,28 +30,32 @@ const ResponsiveAutocomplete = (props) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isMobileFocused = isFocused && isMobile;
 
+  // Lock page scroll when mobile input is focused
   useEffect(() => {
+    const bodyStyle = document.body.style;
+    const htmlStyle = document.documentElement.style;
+
     if (isMobileFocused) {
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.width = "100%";
+      bodyStyle.overflow = "hidden";
+      htmlStyle.overflow = "hidden";
+      bodyStyle.position = "fixed";
+      bodyStyle.width = "100%";
     } else {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.width = "";
+      bodyStyle.overflow = "";
+      htmlStyle.overflow = "";
+      bodyStyle.position = "";
+      bodyStyle.width = "";
     }
-  }, [isMobileFocused]);
+  }, [isFocused,isMobile]);
 
   const handleFocus = (e) => {
     setIsFocused(true);
-    onFocus && onFocus(e);
+    onFocus?.(e);
   };
 
   const handleClose = (...args) => {
     setIsFocused(false);
-    onClose && onClose(...args);
+    onClose?.(...args);
   };
 
   const wrappedRenderInput = (params) => {
@@ -63,35 +68,54 @@ const ResponsiveAutocomplete = (props) => {
     return React.cloneElement(inputElement, {
       ...inputElement.props,
       autoFocus: isFocused,
-     
     });
   };
+
+  const containerSx = isMobileFocused
+    ? {
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        padding: "16px 12px 16px 0px",
+        background: theme.palette.background.paper,
+        zIndex: 1300,
+        boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+        height: "100vh",
+        maxWidth: "-webkit-fill-available",
+        display: "flex",
+        justifyContent: "flex-start",
+        flexDirection: "row",
+        ...mobileFocusedSx,
+      }
+    : {
+        position: "relative",
+      };
+
+  const paperSx = isMobileFocused
+    ? {
+        boxShadow: "none",
+        width: "100vw",
+        left: 0,
+        borderTop: `1.5px solid ${grey[400]}`,
+        borderRadius: 0,
+        mt: 1,
+      }
+    : {};
+
+  const popperSx = isMobileFocused
+    ? {
+        width: "101vw !important",
+        left: "0 !important",
+        right: "0 !important",
+        overflow: "hidden",
+      }
+    : {};
 
   return (
     <Box
       className={isMobileFocused ? mobileBackgroundClassName : undefined}
-      sx={{
-        ...(isMobileFocused
-          ? {
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              padding: "16px 12px 16px 0px",
-              background: theme.palette.background.paper,
-              zIndex: 1300,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-              height: "100vh",
-              maxWidth: "-webkit-fill-available",
-              display: "flex",
-              justifyContent: "flex-start",
-              flexDirection: "row",
-            }
-          : {
-              position: "relative",
-            }),
-        ...(mobileFocusedSx || {}),
-      }}
+      sx={containerSx}
     >
       {isMobileFocused && (
         <IconButton
@@ -99,7 +123,7 @@ const ResponsiveAutocomplete = (props) => {
           sx={{
             alignSelf: "flex-start",
             marginBottom: "18px",
-            ...(backButtonSx || {}),
+            ...backButtonSx,
           }}
           onClick={handleClose}
         >
@@ -109,44 +133,22 @@ const ResponsiveAutocomplete = (props) => {
 
       <Autocomplete
         {...autocompleteProps}
-        onFocus= {handleFocus}
+        onFocus={handleFocus}
         onClose={handleClose}
+        renderInput={isMobile ? wrappedRenderInput : renderInput}
+        openOnFocus
+        blurOnSelect={isMobile ? true : blurOnSelect}
         slotProps={{
           paper: {
-            sx: {
-              ...(isMobileFocused
-                ? {
-                    boxShadow: "none",
-                    width: "100vw",
-                    left: 0,
-                    borderTop: `1.5px solid ${grey[400]}`,
-                    borderRadius: 0,
-                    mt: 1,
-                  }
-                : {}),
-              ...(slotProps?.paper?.sx || {}),
-            },
-            ...slotProps?.paper,
+            ...slotProps.paper,
+            sx: { ...paperSx, ...(slotProps.paper?.sx || {}) },
           },
           popper: {
-            sx: {
-              ...(isMobileFocused
-                ? {
-                    width: "101vw !important",
-                    left: "0 !important",
-                    right: "0 !important",
-                    overflow: "hidden",
-                  }
-                : {}),
-              ...(slotProps?.popper?.sx || {}),
-            },
-            ...slotProps?.popper,
+            ...slotProps.popper,
+            sx: { ...popperSx, ...(slotProps.popper?.sx || {}) },
           },
           ...slotProps,
         }}
-        openOnFocus
-        blurOnSelect={isMobile ? true : props.blurOnSelect}
-        renderInput={isMobile ? wrappedRenderInput : renderInput}
       />
     </Box>
   );
