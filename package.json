@@ -1,6 +1,6 @@
 {
     "name": "react-responsive-autocomplete",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "private": false,
     "main": "dist/index.umd.js",
     "module": "dist/index.modern.js",
@@ -61,6 +61,7 @@
         "@material-ui/lab": "^4.0.0-alpha.47"
     },
     "files": [
-    "dist"
+    "dist",
+    "assets"
   ]
 }
