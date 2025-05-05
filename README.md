@@ -8,16 +8,11 @@ A responsive React component that mimics Material-UI's Autocomplete and adapts t
 - ✅ Support Mutiple MUI version (4,5 & 6)
 - ✅ Responsive Design – switches between standard and fullscreen layouts automatically  
 - ✅ Mobile Optimization – mobile version takes full screen for better mobile experience
-- ✅ Customizable Back Button & Layout – add styles with optional classNames
-- ✅ Fully Compatible with MUI v4 Autocomplete – just swap your import, and it works
-- ✅ Zero breaking changes: use it exactly like `<Autocomplete>`
+- ✅ Customizable Back Button & Layout – add styles with the available props
+- ✅ Fully Compatible with MUI  Autocomplete – just swap your import, and it works
+- ✅ Zero breaking changes: use it exactly like mui Autocomplete
 
 ---
-
-## Components
- There are 2 components that can be used from this package
-- `Autocomplete` for muiv5 and muiv6 versions
-- `AutocompleteV4` for muiv4 version
 
 ##  Getting Started
 
@@ -30,17 +25,36 @@ npm install
 npm start
 ```
 
-> Do the same thing in both the main and example folders.
+## Components  
+There are 2 components that can be used from this package  
+- `Autocomplete` for muiv5 and muiv6 versions  
+
+```js
+import { Autocomplete } from 'react-responsive-autocomplete';
+```
+- `AutocompleteV4` for muiv4 version
+```js
+import { AutocompleteV4 } from 'react-responsive-autocomplete';
+```
+
 
 ## Mobile View
-<p align="center">
-<img src="assets/mobile-example.gif" width="350px" alt="Demo" />
-</p>
+<table align="center" >
+    <tr>
+      <td style="border: 1px solid #eeeeee; padding: 4px; text-align: center;">
+        <img src="assets/mobile-example.gif" width="350px" alt="Demo" />
+      </td>
+    </tr>
+  </table>
 
 ## Desktop View
-<p align="center">
-<img src="assets/desktop-example.gif" width="80%" alt="Demo" />
-</p>
+<table align="center">
+    <tr>
+      <td style="border: 1px solid #f5f5f5; padding: 4px; text-align: center;">
+        <img src="assets/desktop-example.gif" width="700px" alt="Demo" />
+      </td>
+    </tr>
+  </table>
 
 ## ⚙️ Props
 
@@ -67,4 +81,3 @@ All standard props from `MUI v5/v6 Autocomplete` are supported.
 
 - Use backButtonClassName to position or restyle the back button
 
-- Override PopperComponent prop if you need custom dropdown behavior

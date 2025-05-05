@@ -1,6 +1,6 @@
 {
     "name": "react-responsive-autocomplete",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "private": false,
     "main": "dist/index.umd.js",
     "module": "dist/index.modern.js",
@@ -10,12 +10,18 @@
         "build": "rollup -c",
         "start": "rollup -c -w"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hyperdart/react-responsive-autocomplete.git"
+    },
     "keywords": [
+    "react-responsive-autocomplete",
     "autocomplete",
     "react-autocomplete",
     "responsive-autocomplete",
     "mobile-autocomplete"
   ],
+  "homepage": "https://github.com/hyperdart/react-responsive-autocomplete#readme",
     "author": "Hyperdart",
     "license": "ISC",
     "eslintConfig": {
