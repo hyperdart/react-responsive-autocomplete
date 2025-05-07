@@ -30,11 +30,11 @@ There are 2 components that can be used from this package
 - `Autocomplete` for muiv5 and muiv6 versions  
 
 ```js
-import { Autocomplete } from 'react-responsive-autocomplete';
+import Autocomplete  from 'react-responsive-autocomplete';
 ```
-- `AutocompleteV4` for muiv4 version
+- `Autocomplete` for muiv4 version
 ```js
-import { AutocompleteV4 } from 'react-responsive-autocomplete';
+import  Autocomplete from 'react-responsive-autocomplete/v4';
 ```
 
 
@@ -69,7 +69,7 @@ All standard props from `MUI v5/v6 Autocomplete` are supported.
 | `backButtonSx` | object     | Optional sx added to the back <IconButton> shown in mobile fullscreen |
 
 ### AutocompleteV4
-All standard props from `MUI v5/v6 Autocomplete` are supported.
+All standard props from `MUI v4 Autocomplete` are supported.
 | Prop                  | Type       | Description |
 |-----------------------|------------|-------------|
 | `mobilebackgroundClassName`  | string     | Optional class added to the fullscreen <div> container on mobile |

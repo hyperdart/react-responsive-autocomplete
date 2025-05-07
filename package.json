@@ -2,27 +2,19 @@
     "name": "react-responsive-autocomplete",
     "version": "1.0.3",
     "private": false,
-    "main": "dist/index.umd.js",
-    "module": "dist/index.modern.js",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "exports": {
+        ".": "./dist/index.js",
+        "./v4": "./dist/v4.js",
+        "./v5": "./dist/v5.js"
+    },
     "description": "A responsive React component that mimics Material-UI's Autocomplete and adapts to mobile with a full-screen Experience for a better UX.",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "rollup -c",
         "start": "rollup -c -w"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/hyperdart/react-responsive-autocomplete.git"
-    },
-    "keywords": [
-    "react-responsive-autocomplete",
-    "autocomplete",
-    "react-autocomplete",
-    "responsive-autocomplete",
-    "mobile-autocomplete"
-  ],
-  "homepage": "https://github.com/hyperdart/react-responsive-autocomplete#readme",
-    "author": "Hyperdart",
     "license": "ISC",
     "eslintConfig": {
         "extends": [
@@ -53,21 +45,43 @@
         "rollup-plugin-peer-deps-external": "^2.2.4",
         "rollup-plugin-styles": "^4.0.0",
         "source-map": "^0.7.4"
-      
     },
     "peerDependencies": {
-        "@mui/icons-material": ">=5.0.0 <7.0.0",
-        "@mui/material": ">=5.0.0 <7.0.0",
-        "react": ">=17.0.0 <20.0.0",
-        "react-dom": ">=17.0.0 <20.0.0",
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
-        "@material-ui/core": "^4.12.4",
-        "@material-ui/icons": "^4.11.3",
-        "@material-ui/lab": "^4.0.0-alpha.47"
+        "@material-ui/core": ">=4.0.0 <5.0.0",
+        "@material-ui/icons": ">=4.0.0 <5.0.0",
+        "@material-ui/lab": ">=4.0.0-alpha.47 <5.0.0",
+        "@mui/icons-material": "^6.4.11",
+        "@mui/material": "^6.4.11",
+        "react": ">=16.8.0 <20.0.0",
+        "react-dom": ">=16.8.0.0 <20.0.0"
+    },
+    "peerDependenciesMeta": {
+        "@mui/material": {
+            "optional": true
+        },
+        "@mui/icons-material": {
+            "optional": true
+        },
+        "@emotion/react": {
+            "optional": true
+        },
+        "@emotion/styled": {
+            "optional": true
+        },
+        "@material-ui/core": {
+            "optional": true
+        },
+        "@material-ui/icons": {
+            "optional": true
+        },
+        "@material-ui/lab": {
+            "optional": true
+        }
     },
     "files": [
-    "dist",
-    "assets"
-  ]
+        "dist",
+        "assets"
+    ]
 }

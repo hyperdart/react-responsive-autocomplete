@@ -3,7 +3,6 @@ import { Autocomplete } from "@material-ui/lab";
 import { IconButton, TextField, useMediaQuery } from "@material-ui/core";
 import { useTheme, withStyles } from "@material-ui/core/styles";
 import { ArrowBack } from "@material-ui/icons";
-import { grey } from "@material-ui/core/colors";
 
 const styles = (theme) => ({
   wrapper: {
@@ -31,7 +30,7 @@ const styles = (theme) => ({
     boxShadow: "none",
     width: "100vw !important",
     left: "0 !important",
-    borderTop: `1.5px solid ${grey[400]}`,
+    borderTop: `1.5px solid #eee`,
     borderRadius: 0,
     marginTop: theme.spacing(1),
   },

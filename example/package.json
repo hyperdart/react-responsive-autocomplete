@@ -6,7 +6,7 @@
     "dependencies": {
     "@mui/material": "file:../node_modules/@mui/material",
     "@mui/icons-material": "file:../node_modules/@mui/icons-material",
-    "react-autocomplete": "file:..",
+    "react-responsive-autocomplete": "file:..",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
     "react-router": "file:../node_modules/react-router",
