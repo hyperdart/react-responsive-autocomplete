@@ -42,7 +42,7 @@ import  Autocomplete from 'react-responsive-autocomplete/v4';
 <table align="center" >
     <tr>
       <td style="border: 1px solid #eeeeee; padding: 4px; text-align: center;">
-        <img src="assets/mobile-example.gif" width="350px" alt="Demo" />
+        <img src="https://raw.githubusercontent.com/hyperdart/react-responsive-autocomplete/main/assets/mobile-example.gif" width="350px" alt="Demo" />
       </td>
     </tr>
   </table>
@@ -51,7 +51,7 @@ import  Autocomplete from 'react-responsive-autocomplete/v4';
 <table align="center">
     <tr>
       <td style="border: 1px solid #f5f5f5; padding: 4px; text-align: center;">
-        <img src="assets/desktop-example.gif" width="700px" alt="Demo" />
+        <img src="https://raw.githubusercontent.com/hyperdart/react-responsive-autocomplete/main/assets/desktop-example.gif" width="700px" alt="Demo" />
       </td>
     </tr>
   </table>
