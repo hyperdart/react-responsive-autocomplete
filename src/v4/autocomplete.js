@@ -60,7 +60,7 @@ const ResponsiveAutocomplete = (props) => {
 
   // Lock page scroll when mobile input is focused
   useEffect(() => {
-    if (isMobileFocused) {
+    if (isFocused && isMobile) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
       document.body.style.position = "fixed";

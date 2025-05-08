@@ -35,7 +35,7 @@ const ResponsiveAutocomplete = (props) => {
     const bodyStyle = document.body.style;
     const htmlStyle = document.documentElement.style;
 
-    if (isMobileFocused) {
+    if (isFocused && isMobile) {
       bodyStyle.overflow = "hidden";
       htmlStyle.overflow = "hidden";
       bodyStyle.position = "fixed";
